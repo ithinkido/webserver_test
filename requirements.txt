@@ -1,5 +1,0 @@
-pyserial
-requests
-Flask
-Flask-SocketIO
-vpype --prefer-binary vpype
