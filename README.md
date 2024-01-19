@@ -71,4 +71,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)  
 
-![visitors](https://visitor-badge.glitch.me/badge?page_id=ithinkido.PenPlotterWebServer)
+<!-- ![visitors](https://visitor-badge.glitch.me/badge?page_id=ithinkido.PenPlotterWebServer) -->
