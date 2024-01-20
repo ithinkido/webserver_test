@@ -1,5 +1,13 @@
 #!/bin/bash
 
+dir="$HOME/webplotter"
+venv="$HOME/penplotter_venv"
+git="https://github.com/ithinkido/webserver_test.git"
+
+#######################################################
+#######################################################
+
+
 spinner()
 {
     local pid=$!
@@ -44,7 +52,8 @@ echo ""
 echo "Updating apt. This will take a while..."
 (sudo apt-get update -qq > /dev/null) & spinner
 wait
-dir="$HOME/webplotter"
+
+
 ## Check for dir, if not found create it using the mkdir ##
 if [ ! -d "$dir" ] ; then
     echo ""
@@ -54,9 +63,9 @@ if [ ! -d "$dir" ] ; then
 
     echo ""
     echo "Downloading Web Plotter from Github"
-    if git ls-remote --exit-code --heads https://github.com/ithinkido/penplotter-webserver.git "$BRANCH" > /dev/null; then
+    if git ls-remote --exit-code --heads $git "$BRANCH" > /dev/null; then
         # DO NOT CHANGE without changing git actions 
-        git clone -q -b "$BRANCH" https://github.com/ithinkido/penplotter-webserver.git "$HOME/webplotter" > /dev/null
+        git clone -q -b "$BRANCH" $git "$dir" > /dev/null
     else
         echo "Branch does not exist"
         return 1
@@ -65,8 +74,8 @@ if [ ! -d "$dir" ] ; then
     echo ""
 
     echo "Create python venv"
-    python3 -m venv $HOME/penplotter_venv
-    source $HOME/penplotter_venv/bin/activate &&
+    python3 -m venv $venv
+    source $venv/bin/activate &&
     if [ -n "$VIRTUAL_ENV" ]; then
     echo "Pen plotter web server virtual environment is active."
     echo "Path: $VIRTUAL_ENV"
@@ -108,8 +117,10 @@ if [ ! -d "$dir" ] ; then
         echo ""
     else
         echo "Something has gone wrong...."
-        $HOME/penplotter_venv/bin/python3 $HOME/webplotter/main.py
+        cd $dir
+        $venv/bin/python3 $dir/main.py &
         printf "\033[?25h"
+        sleep 5
         exit 1
     fi
 
@@ -127,7 +138,7 @@ if [ ! -d "$dir" ] ; then
 
 
 ##########################################
-##########################################
+###      UPDATE EXISTING INSTALL      ####
 ##########################################
 
 
@@ -137,10 +148,10 @@ else
     echo "Directory "$dir" already exists"
     echo ""
     mkdir -p temp
-    if [ ! -d "$HOME/penplotter_venv/" ]; then
+    if [ ! -d "$venv/" ]; then
         echo "Looks like you do not have a penplotter_venv virtual environment."
         echo "Let's take care of that."
-        python3 -m venv  $HOME/penplotter_venv
+        python3 -m venv $venv
         wait
     fi
     if [ -d "$dir/uploads/" ]; then
@@ -156,9 +167,9 @@ else
     rm -rf "$dir"
 
     echo "Updating packages"
-    if git ls-remote --exit-code --heads https://github.com/ithinkido/penplotter-webserver.git "$BRANCH" > /dev/null; then
+    if git ls-remote --exit-code --heads $git "$BRANCH" > /dev/null; then
         # DO NOT CHANGE without changing git actions 
-        git clone -q -b "$BRANCH" https://github.com/ithinkido/penplotter-webserver.git "$HOME/webplotter" > /dev/null
+        git clone -q -b "$BRANCH" $git "$dir" > /dev/null
     else
         echo "Branch does not exist"
         return 1
@@ -170,9 +181,9 @@ else
     #clean up
     rm -R temp
     
-    source $HOME/penplotter_venv/bin/activate &&
+    source $venv/bin/activate &&
     if [ -n "$VIRTUAL_ENV" ]; then
-    echo "Pen plotter web server virtual environment is active."
+    echo "Pen plotter web server virtual environment is now active."
     echo "Path: $VIRTUAL_ENV"
     else
         echo "Virtual environment is not active."
@@ -203,9 +214,11 @@ else
         echo ""
     else
         echo "Something has gone wrong...."
-        source penplotter_ws/bin/activate &&
-        python3 $HOME/webplotter/main.py
+        source $venv/bin/activate &&
+        cd $dir
+        python3 $dir/main.py &
         printf "\033[?25h"
+        sleep 5
         exit
     fi
 

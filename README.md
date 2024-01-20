@@ -37,7 +37,7 @@ This quick and easy easy install script is intended to be used with Raspibain OS
 From the home directory, run:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/ithinkido/penplotter-webserver/bullseye_32/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/ithinkido/penplotter-webserver/$B_NAME/install.sh | bash
 ```
 
 This will install the Pen Plotter Web Server and will reboot the Raspberry Pi once installation is completed.
