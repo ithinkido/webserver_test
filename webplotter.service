@@ -10,7 +10,7 @@ WantedBy=multi-user.target
 [Service]
 User=pi
 WorkingDirectory=/home/pi/webplotter
-ExecStart=/home/pi/penplotter_ws/bin/python3 /home/pi/webplotter/main.py
+ExecStart=/home/pi/penplotter_venv/bin/python3 /home/pi/webplotter/main.py
 TimeoutSec=600
 Restart=on-failure
 RuntimeDirectoryMode=755
